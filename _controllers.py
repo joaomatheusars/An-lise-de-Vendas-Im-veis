@@ -34,9 +34,9 @@ controlers = dbc.Row([
             "margin-top": "20px", "margin-bottom": "20px"}),
     dcc.Dropdown(
         options=[
-            {'label': 'Year Built', 'value': 'Year Built'},
-            {'label': 'Total Units', 'value': 'Total Units'},
-            {'label': 'Sale Price', 'value': 'Sale Price'},
+            {'label': 'Year Built'.upper(), 'value': 'Year Built'.upper()},
+            {'label': 'Total Units'.upper(), 'value': 'Total Units'.upper()},
+            {'label': 'Sale Price'.upper(), 'value': 'Sale Price'.upper()},
         ],
         value='Sale Price',
         id='dropdown-color'
