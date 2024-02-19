@@ -69,14 +69,14 @@ def update_hist(location, square_size, color_map):
     hist_fig.layout = hist_layout
 
     colors_rgb = px.colors.sequential.GnBu
-    df_quantiles = df_data[color_map].quantile(
-        np.linspace(0, 1, len(colors_rgb))).to_frame()
-    df_quantiles = (df_quantiles - df_quantiles.min()) / \
-        (df_quantiles.max() - df_quantiles.min())
-    df_quantiles["colors"] = colors_rgb
-    df_quantiles.set_index(color_map, inplace=True)
-    color_scale = [[i, j] for i, j in df_quantiles["colors"].iteritems()]
     
+    df_quantiles = df_data[color_map.upper()].quantile(np.linspace(0, 1, len(colors_rgb))).to_frame()
+    df_quantiles = (df_quantiles - df_quantiles.min()) / (df_quantiles.max() - df_quantiles.min())
+    df_quantiles["colors"] = colors_rgb
+    df_quantiles.set_index(color_map.upper(), inplace=True)
+    
+    color_scale = [[i, j] for i, j in df_quantiles["colors"].items()]
+
     px.set_mapbox_access_token(environ.get("TOKEN"))
     map_fig = px.scatter_mapbox(df_intermediate, lat="LATITUDE", lon="LONGITUDE",
                                 color=color_map.upper(), size="size_m2", size_max=20, zoom=10, opacity=0.4)
