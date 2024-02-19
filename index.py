@@ -5,6 +5,7 @@ import pandas as pd
 from app import app
 from _map import *
 from _histogram import *
+from _controllers import *
 
 # -------------------
 # Data ingestion
@@ -28,7 +29,7 @@ df_data.loc[df_data["SALE PRICE"] < 1000000, "SALE PRICE"] = 100000
 app.layout = dbc.Container(
     children=[
         dbc.Row([
-            dbc.Col([], md=3),
+            dbc.Col([controlers], md=3),
             dbc.Col([map, hist], md=9),
         ])
     ],
