@@ -7,6 +7,7 @@ from app import app
 from _map import *
 from _histogram import *
 from _controllers import *
+from os import environ
 
 # -------------------
 # Data ingestion
@@ -42,7 +43,7 @@ app.layout = dbc.Container(
 # -------------------
 
 
-@app.callback(Output('hist-graph', 'figure'),
+@app.callback([Output('hist-graph', 'figure'), Output('map-graph', 'figure')],
               [Input('location-dropdown', 'value'),
                Input('slider-square-size', 'value'),
                Input('dropdown-color', 'value')])
@@ -56,7 +57,7 @@ def update_hist(location, square_size, color_map):
         ))
         df_intermediate = df_intermediate[df_intermediate["GROSS SQUARE FEET"] <= size_limit]
 
-    hist_fig = px.histogram(df_intermediate, x=color_map, opacity=0.75)
+    hist_fig = px.histogram(df_intermediate, x=color_map.upper(), opacity=0.75)
     hist_layout = go.Layout(
         margin=go.layout.Margin(l=10, r=0, t=0, b=5),
         showlegend=False,
@@ -65,7 +66,15 @@ def update_hist(location, square_size, color_map):
     )
 
     hist_fig.layout = hist_layout
-    return hist_fig
+
+    px.set_mapbox_access_token(environ.get("TOKEN"))
+    map_fig = px.scatter_mapbox(df_intermediate, lat="LATITUDE", lon="LONGITUDE",
+                                color=color_map.upper(), size="size_m2", size_max=20, zoom=10, opacity=0.4)
+    map_fig.update_layout(mapbox=dict(center=go.layout.mapbox.Center(lat=mean_lat, lon=mean_long)),
+                          template="plotly_dark", paper_bgcolor="rgba(0, 0, 0, 0)",
+                          margin=go.layout.Margin(l=10, r=10, t=10, b=10),)
+
+    return hist_fig, map_fig
 
 
 if __name__ == "__main__":
