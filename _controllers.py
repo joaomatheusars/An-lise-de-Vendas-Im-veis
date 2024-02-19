@@ -14,8 +14,7 @@ list_of_locations = {
 slider_size = [100, 500, 1000, 10000, 1000000]
 
 controlers = dbc.Row([
-    html.Img(id="logo", src=app.get_asset_url(
-        "logo_dark.png"), style={"widht": "50%"}),
+    html.H1("New York City", style={"widht": "50%", "margin-top": "20px"}),
     html.H3("Vendas de imóveis - NYC", style={"margin-top": "30px"}),
     html.P("""Utilize este dashboard para analisar vendas ocorridas na cidade de New york no período de 1 ano."""),
     html.H4("Distrito", style={"margin-top": "50px", "margin-bottom": "25px"}),
