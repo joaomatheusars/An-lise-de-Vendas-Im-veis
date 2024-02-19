@@ -1,8 +1,10 @@
-from dash import html
+from dash import html, dcc
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 import pandas as pd
 from app import app
+from _map import *
+from _histogram import *
 
 # -------------------
 # Data ingestion
@@ -20,7 +22,18 @@ df_data.loc[df_data["size_m2"] > 10000, "size_m2"] = 10000
 df_data.loc[df_data["SALE PRICE"] > 50000000, "SALE PRICE"] = 50000000
 df_data.loc[df_data["SALE PRICE"] < 1000000, "SALE PRICE"] = 100000
 
-app.layout = dbc.Container(children=[], fluid=True)
+# -------------------
+# Layout
+# -------------------
+app.layout = dbc.Container(
+    children=[
+        dbc.Row([
+            dbc.Col([], md=3),
+            dbc.Col([map, hist], md=9),
+        ])
+    ],
+    fluid=True
+)
 
 if __name__ == "__main__":
     app.run(debug=True)
