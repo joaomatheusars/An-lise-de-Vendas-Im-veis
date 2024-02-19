@@ -42,7 +42,7 @@ app.layout = dbc.Container(
 # -------------------
 
 
-@app.callback([Output('hist-graph', 'figure')],
+@app.callback(Output('hist-graph', 'figure'),
               [Input('location-dropdown', 'value'),
                Input('slider-square-size', 'value'),
                Input('dropdown-color', 'value')])
@@ -52,8 +52,8 @@ def update_hist(location, square_size, color_map):
     else:
         df_intermediate = df_data[df_data["BOROUGH"] ==
                                   location] if location != 0 else df_data.copy()
-        size_limit = slider_size[square_size] if square_size is not None else df_data["GROSS SQUARE FEET"].max(
-        )
+        size_limit = int(slider_size[square_size] if square_size is not None else df_data["GROSS SQUARE FEET"].max(
+        ))
         df_intermediate = df_intermediate[df_intermediate["GROSS SQUARE FEET"] <= size_limit]
 
     hist_fig = px.histogram(df_intermediate, x=color_map, opacity=0.75)
